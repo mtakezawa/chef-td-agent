@@ -45,7 +45,7 @@ platform = node['platform']
 log platform
 log node['lsb']['codename']
 case platform
-when "ubuntu", "debian"
+when "ubuntu", "debian", "raspbian"
   dist = node['lsb']['codename']
   source =
     if major.nil? || major == '1'
@@ -57,7 +57,15 @@ when "ubuntu", "debian"
       end
     else
       # version 2.x or later
-      "http://packages.treasuredata.com/#{major}/#{platform}/#{dist}/"
+      if dist == 'precise'
+        "http://packages.treasuredata.com/#{major}/ubuntu/#{dist}/"
+      else
+        if dist.nil? || dist == 'n/a'
+          # for raspbian
+          dist = 'wheezy'
+        end
+        "http://packages.treasuredata.com/#{major}/debian/#{dist}/"
+      end
     end
 
   log source
