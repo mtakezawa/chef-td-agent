@@ -41,8 +41,9 @@ directory '/etc/td-agent/' do
   action :create
 end
 
-case node['platform']
-when "ubuntu"
+platform = node['platform']
+case platform
+when "ubuntu", "debian"
   dist = node['lsb']['codename']
   source =
     if major.nil? || major == '1'
@@ -54,7 +55,7 @@ when "ubuntu"
       end
     else
       # version 2.x or later
-      "http://packages.treasuredata.com/#{major}/ubuntu/#{dist}/"
+      "http://packages.treasuredata.com/#{major}/#{platform}/#{dist}/"
     end
 
   apt_repository "treasure-data" do
