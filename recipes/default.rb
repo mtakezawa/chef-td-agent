@@ -42,6 +42,8 @@ directory '/etc/td-agent/' do
 end
 
 platform = node['platform']
+log platform
+log node['lsb']['codename']
 case platform
 when "ubuntu", "debian"
   dist = node['lsb']['codename']
@@ -58,6 +60,7 @@ when "ubuntu", "debian"
       "http://packages.treasuredata.com/#{major}/#{platform}/#{dist}/"
     end
 
+  log source
   apt_repository "treasure-data" do
     uri source
     distribution dist
